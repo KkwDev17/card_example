@@ -1,50 +1,30 @@
 "use client";
 
-import { useState } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import CardActionArea from "@mui/material/CardActionArea";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import Snackbar from "@mui/material/Snackbar";
+import { useState, forwardRef } from "react";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  Snackbar,
+  Avatar,
+  Chip,
+  Stack,
+} from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import Styles from "./Style.module.css";
-import React from "react";
+import { Email, Phone, LocationOn, Language } from "@mui/icons-material";
 
-
-// 🔹 Reutilizamos Alert dentro del Snackbar
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref
-) {
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-type CardComponentTypes = {
-  id: string;
-  name: string;
-  price: number;
-  description?: string;
-  category?: string;
-  url?: string;
-};
-
-export default function CardComponent({
-  id,
-  name,
-  price,
-  description,
-  category,
-  url,
-}: CardComponentTypes) {
-  // Estado para el Snackbar
+export default function CardComponent() {
   const [open, setOpen] = useState(false);
 
-  const handleAddToCart = () => {
+  const handleClick = () => {
     setOpen(true);
+    setTimeout(() => console.log("Redirigiendo a formulario..."), 2000);
   };
 
   const handleClose = (
@@ -56,89 +36,143 @@ export default function CardComponent({
   };
 
   return (
-    <>
-      <Card sx={{ maxWidth: 345, minHeight: 500 }} className={Styles.card}>
-        <CardActionArea>
-          <div>
-            <span className={`${Styles.badge1} ${Styles.popular}`}>
-              <FavoriteBorderIcon style={{ color: "#2D5F3F" }} />
-            </span>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        background:
+          "linear-gradient(135deg, #2D5F3F 0%, #F1F8E9 100%)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        p: 2,
+      }}
+    >
+      <Card
+        sx={{
+          width: 380,
+          borderRadius: 6,
+          overflow: "hidden",
+          boxShadow: "0 10px 35px rgba(0,0,0,0.15)",
+          background: "#FAFAFA",
+          backdropFilter: "blur(12px)",
+        }}
+      >
+        {/* Encabezado tipo banner circular */}
+        <Box
+          sx={{
+            position: "relative",
+            height: 150,
+            background:
+              "linear-gradient(135deg, #2E7D32 0%, #A5D6A7 100%)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Avatar
+            src="/logo.jpg"
+            alt="Reuse Market"
+            sx={{
+              width: 100,
+              height: 100,
+              border: "4px solid #FAFAFA",
+              boxShadow: "0 4px 15px rgba(0,0,0,0.25)",
+              position: "absolute",
+              bottom: -50,
+              backgroundColor: "#fff",
+            }}
+          />
+        </Box>
 
-            <CardMedia
-              component="img"
-              height="140"
-              image={url}
-              alt={name}
-              style={{ maxWidth: 400, maxHeight: 200 }}
+        {/* Contenido principal */}
+        <CardContent sx={{ mt: 7, px: 3, pb: 4, textAlign: "center" }}>
+          <Typography variant="h6" fontWeight={700} color="text.primary">
+            Reuse Market
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ mb: 2, fontStyle: "italic" }}
+          >
+            Revolucionando la forma en que reutilizamos 🌱
+          </Typography>
+
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            textAlign="justify"
+            sx={{ mb: 3 }}
+          >
+            Somos una empresa comprometida con el medio ambiente. En Reuse Market 
+            impulsamos la economía circular ofreciendo una plataforma donde cada 
+            producto puede tener una segunda vida útil.
+          </Typography>
+
+          {/* Chips informativos */}
+          <Stack
+            direction="row"
+            spacing={1}
+            justifyContent="center"
+            flexWrap="wrap"
+            sx={{ mb: 3 }}
+          >
+            <Chip
+              icon={<Email sx={{ color: "#2E7D32 !important" }} />}
+              label="contacto@reusemarket.com"
+              sx={{ bgcolor: "#E8F5E9", color: "#2D5F3F", fontSize: 12 }}
             />
+            <Chip
+              icon={<Phone sx={{ color: "#2D5F3F !important" }} />}
+              label="+52 55 1234 5678"
+              sx={{ bgcolor: "#E8F5E9", color: "#2D5F3F", fontSize: 12 }}
+            />
+            <Chip
+              icon={<LocationOn sx={{ color: "#2D5F3F !important" }} />}
+              label="CDMX, México"
+              sx={{ bgcolor: "#E8F5E9", color: "#1B5E20", fontSize: 12 }}
+            />
+            <Chip
+              icon={<Language sx={{ color: "#2D5F3F !important" }} />}
+              label="www.reusemarket.com"
+              sx={{ bgcolor: "#E8F5E9", color: "#1B5E20", fontSize: 12 }}
+            />
+          </Stack>
 
-            <span className={`${Styles.badge} ${Styles.popular}`}>Popular</span>
-          </div>
-
-          <CardContent className={Styles["card-body"]}>
-            <Typography
-              gutterBottom
-              variant="caption"
-              component="div"
-              style={{ fontWeight: 700, color: "#A8BC8E" }}
-            >
-              {category}
-            </Typography>
-
-            <Typography
-              gutterBottom
-              variant="h6"
-              component="div"
-              style={{ fontWeight: 700, color: "#2D5F3F" }}
-            >
-              {name}
-            </Typography>
-
-            <Typography variant="body2" className={Styles["card-description"]}>
-              {description}
-            </Typography>
-
-            <Typography
-              variant="h5"
-              style={{
-                fontWeight: 700,
-                color: "#2D5F3F",
-              }}
-            >
-              ${price}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-
-        <CardActions className={Styles["card-footer"]}>
+          {/* Botón de acción */}
           <Button
+            fullWidth
             variant="contained"
-            style={{ backgroundColor: "#2D5F3F" }}
-            onClick={handleAddToCart}
+            onClick={handleClick}
+            sx={{
+              borderRadius: 50,
+              py: 1.3,
+              fontWeight: 700,
+              letterSpacing: 0.5,
+              textTransform: "none",
+              background:
+                "linear-gradient(135deg,#2D5F3F 0%, #81C784 100%)",
+              "&:hover": {
+                background:
+                  "linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%)",
+              },
+            }}
           >
-            Agregar al carrito
+            Enviar mensaje
           </Button>
-
-          <Button
-            variant="outlined"
-            style={{ borderBlockColor: "#2D5F3F", color: "#2D5F3F" }}
-          >
-            Ver más
-          </Button>
-        </CardActions>
+        </CardContent>
       </Card>
 
-      {/* 🔹 Snackbar flotante (toast) */}
+      {/* Alerta tipo Snackbar */}
       <Snackbar
         open={open}
-        autoHideDuration={2000}
+        autoHideDuration={2500}
         onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-           Producto agregado al carrito
+          Redirigiendo al formulario...
         </Alert>
       </Snackbar>
-    </>
+    </Box>
   );
 }
